@@ -27,11 +27,6 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Pasang NDK 28 dan CMake
-        run: |
-          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
-          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;28.2.13676358" "cmake;3.22.1"
-
       - name: Siapkan proyek dan baca versi
         id: prep
         run: |
@@ -62,9 +57,6 @@ jobs:
           echo "Versi yang dibangun: $VERSION"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
-      - name: Unduh Dear ImGui v1.90.9
-        run: git clone --depth 1 --branch v1.90.9 https://github.com/ocornut/imgui.git "$RUNNER_TEMP/proj/app/src/main/cpp/imgui"
-
       - name: Build APK release
         working-directory: ${{ runner.temp }}/proj
         run: |
@@ -88,4 +80,3 @@ jobs:
           body_path: ${{ runner.temp }}/proj/release_notes.txt
           files: ${{ runner.temp }}/proj/FloatingDebug-${{ steps.prep.outputs.version }}.apk
           make_latest: true
-          
